@@ -12,6 +12,11 @@
     </head>
     <body>
         <script type="text/javascript" src="cordova.js"></script>
+		<script type="text/javascript">
+			function keluar(){
+				navigator.app.exitApp();
+			}
+		</script>
 		<div data-role="page">
 			<div date-role="header">
 				<h1>Simple CRUD</h1>
@@ -21,6 +26,7 @@
 				<button onclick="location.href='read.html';">Read</button>
 				<button onclick="location.href='update.html';">Update</button>
 				<button onclick="location.href='delete.html';">Delete</button>
+				<button onclick="keluar()">Exit!</button>
 			</div>
 			<div date-role="footer">
 				<p align="center">2018 &copy; stevanry</p>
