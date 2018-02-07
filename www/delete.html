@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+		<link rel="stylesheet" href="jquery.mobile-1.4.5.min.css" />
+		<script src="jquery-1.11.1.min.js"></script>
+		<script src="jquery.mobile-1.4.5.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="jquery.dataTables.min.css" />
+		<script type="text/javascript" charset="utf8" src="jquery.dataTables.min.js"></script>
+        <title>Simple CRUD</title>
+    </head>
+    <body>
+        <script type="text/javascript" src="cordova.js"></script>
+		<script type="text/javascript">
+		$(document).ready(function() {
+			$.ajax({
+				type:'POST',
+				url: 'http://epengawasan.com/server/data.php',
+				dataType:'json',
+				success:function(data){
+					var $dataid=$("#form-dataid");
+					$dataid.empty();
+					for (var i = 0; i < data.length; i++) {
+						$dataid.append('<option value="' + data[i].data_id + '">' + data[i].data_id + '</option>');
+					}
+				}
+			});
+			$("#delete").submit(function(e){
+				e.preventDefault();
+				var id=$("#form-dataid").val();
+				$.ajax({
+					method: "GET",
+					dataType: "jsonp",
+					jsonpCallback: 'callback',
+					url: "http://epengawasan.com/server/delete.php?id="+id,
+					success: function(x) {
+						alert(x.data);
+						location.href='index.html';
+					}
+				});
+			});
+			$("#form-dataid").on('change',function(e){
+				var id=$(this).val();
+				$.ajax({
+					type:'POST',
+					url: 'http://epengawasan.com/server/data.php',
+					dataType:'json',
+					data:{
+						'id':id
+					},
+					success:function(data){
+						var $datatxt=$("#form-data");
+						$datatxt.val(data[0].isi);
+					}
+				});
+			});
+		} );
+		</script>
+		<div data-role="page">
+			<div date-role="header">
+				<h1>Simple CRUD</h1>
+			</div>
+			<div date-role="main" class="ui-content">
+				<h1>Delete</h1>
+				<form id="delete">
+					<p>Data ID :</p>
+					<select name="id" class="chosen-select form-control" id="form-dataid" data-placeholder="Pilih Data ID ...">
+						<option value=""></option>
+					</select>
+					<p>Data Value :</p>
+					<input type="text" name="value" id="form-data" />
+					<input type="submit" name="delete" value="Delete Now!" />
+				</form>
+				<button onclick="location.href='index.html';">Back</button>
+			</div>
+			<div date-role="footer">
+				<p align="center">2018 &copy; stevanry</p>
+			</div>
+		</div>
+    </body>
+</html>
