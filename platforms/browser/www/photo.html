@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+		<link rel="stylesheet" href="jquery.mobile-1.4.5.min.css" />
+		<script src="jquery-1.11.1.min.js"></script>
+		<script src="jquery.mobile-1.4.5.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="jquery.dataTables.min.css" />
+		<script type="text/javascript" charset="utf8" src="jquery.dataTables.min.js"></script>
+        <title>Simple CRUD</title>
+    </head>
+    <body>
+        <script type="text/javascript" src="cordova.js"></script>
+		<script type="text/javascript">
+		$(document).ready(function() {
+			// take picture from camera
+            $('#but_take').click(function(){      
+                navigator.camera.getPicture(onSuccess, onFail, { quality: 20,
+                    destinationType: Camera.DestinationType.FILE_URL 
+                });
+            });
+
+            // upload select 
+            $("#but_select").click(function(){
+                navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
+                    sourceType: Camera.PictureSourceType.PHOTOLIBRARY, 
+                    allowEdit: true,
+                    destinationType: Camera.DestinationType.FILE_URI
+                });
+            });
+
+            // Change image source and upload photo to server
+            function onSuccess(imageURI) {
+                // Set image source
+                var image = document.getElementById('img');
+                image.src = imageURI  + '?' + Math.random();
+
+                var options = new FileUploadOptions();
+                options.fileKey = "file";
+                options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
+                options.mimeType = "image/jpeg";
+
+                var params = {};
+                params.value1 = "test";
+                params.value2 = "param";
+
+                options.params = params;
+                options.chunkedMode = false;
+
+                var ft = new FileTransfer();
+                ft.upload(imageURI, "http://demo.makitweb.com/phonegap_camera/upload.php", function(result){
+                    alert('successfully uploaded ' + result.response);
+                }, function(error){
+                    alert('error : ' + JSON.stringify(error));
+                }, options);
+            }
+            function onFail(message) {
+                alert('Failed because: ' + message);
+            }
+		} );
+		</script>
+		<div data-role="page">
+			<div date-role="header">
+				<h1>Simple CRUD</h1>
+			</div>
+			<div date-role="main" class="ui-content">
+				<h1>Create</h1>
+				<div style="margin:0 auto; width:30%!important;text-align: center;">
+					<img src="img/cam2.jpg" id='img' style="width: 100px; height: 100px;">
+				</div><br/>
+
+				<div style="width:100%; text-align:center; padding:10px;">
+					<button id='but_take'>Take photo</button>
+					<button id='but_select'>Select photo from Gallery</button>
+				</div>
+				<button onclick="location.href='index.html';">Back</button>
+			</div>
+			<div date-role="footer">
+				<p align="center">2018 &copy; stevanry</p>
+			</div>
+		</div>
+    </body>
+</html>
