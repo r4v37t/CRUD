@@ -14,4 +14,5 @@
     <allow-intent href="*" />
     <allow-navigation href="*" />
     <gap:plugin name="cordova-plugin-whitelist" source="npm" />
+    <preference name="AndroidPersistentFileLocation" value="Compatibility" />
 </widget>
