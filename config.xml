@@ -15,5 +15,5 @@
 	<allow-navigation href="*" />
 	<gap:plugin name="cordova-plugin-whitelist" source="npm" />
 	<preference name="AndroidPersistentFileLocation" value="Compatibility" />
-	<plugin name="cordova-plugin-file-transfer" spec="1" />
+	<plugin name="cordova-plugin-file-transfer" spec="~1.6.1" />
 </widget>
